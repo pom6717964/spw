@@ -5,14 +5,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Enemy extends Sprite{
-	public static final int Y_TO_FADE = 400;
-	public static final int Y_TO_DIE = 600;
+	public static final int Y_TO_FADE = 450;
+	public static final int Y_TO_DIE = 650;
 	
-	private int step = 10;
+	private int step = 12;
 	private boolean alive = true;
 	
 	public Enemy(int x, int y) {
-		super(x, y, 4, 20);
+		super(x, y, 3, 25);
 		
 	}
 
@@ -24,7 +24,7 @@ public class Enemy extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-		g.setColor(Color.RED);
+		g.setColor(Color.YELLOW);
 		g.fillRect(x, y, width, height);
 		
 	}

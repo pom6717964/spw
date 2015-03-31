@@ -1,11 +1,13 @@
 package f2.spw;
 
-import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
 
 public class SpaceShip extends Sprite{
 
-	int step = 10;
+	int step = 15;
 	
 	public SpaceShip(int x, int y, int width, int height) {
 		super(x, y, width, height);

@@ -15,14 +15,14 @@ public class GamePanel extends JPanel {
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 
 	public GamePanel() {
-		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
+		bi = new BufferedImage(450, 650, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
 			big.setBackground(Color.darkGray);
 
 	}
 
 	public void updateGameUI(GameReporter reporter){
-		big.clearRect(0, 0, 400, 600);
+		big.clearRect(0, 0, 450, 650);
 		if(reporter.getScore() > 100000)
 			big.setColor(Color.RED);
 		else
