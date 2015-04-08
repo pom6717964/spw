@@ -7,7 +7,7 @@ import java.awt.Color;
 
 public class SpaceShip extends Sprite{
 
-	int step = 15;
+	int step = 18;
 	
 	public SpaceShip(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -25,8 +25,8 @@ public class SpaceShip extends Sprite{
 		x += (step * direction);
 		if(x < 0)
 			x = 0;
-		if(x > 400 - width)
-			x = 400 - width;
+		if(x > 480 - width)
+			x = 480 - width;
 	}
 
 }

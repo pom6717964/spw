@@ -17,19 +17,22 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		bi = new BufferedImage(450, 650, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
-			big.setBackground(Color.darkGray);
+			big.setBackground(Color.BLACK);
 
 	}
 
 	public void updateGameUI(GameReporter reporter){
 		big.clearRect(0, 0, 450, 650);
-		if(reporter.getScore() > 100000)
-			big.setColor(Color.RED);
+		if(reporter.getScore() < 100000)
+			big.setColor(Color.BLACK);
+		else if(reporter.getScore() > 100000 && reporter.getScore() < 500000)
+			big.setColor(Color.GREEN);
 		else
-			big.setColor(Color.WHITE);
-		big.drawString(String.format("%08d", reporter.getScore()), 300, 20);
+			big.setColor(Color.RED);
+		big.drawString(String.format("%09d", reporter.getScore()), 350, 35);
 		for(Sprite s : sprites){
 			s.draw(big);
+			//system.out.print("LEVEL UP");
 		}
 		
 		repaint();
