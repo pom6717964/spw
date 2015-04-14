@@ -11,7 +11,7 @@ public class Main {
 		frame.setSize(450, 650);
 		frame.getContentPane().setLayout(new BorderLayout());
 		
-		SpaceShip v = new SpaceShip(225, 550, 25, 20);
+		SpaceShip v = new SpaceShip(225, 550, 30, 45);
 		GamePanel gp = new GamePanel();
 		GameEngine engine = new GameEngine(gp, v);
 		frame.addKeyListener(engine);
