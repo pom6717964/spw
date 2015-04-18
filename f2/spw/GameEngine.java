@@ -13,23 +13,27 @@ import javax.swing.Timer;
 
 public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
-	
+	private ArrayList<Path> paths = new ArrayList<Path>();
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
+
 	private SpaceShip v;	
 	
 	private Timer timer;
-	
-	private long score = 0;
-	private double difficulty = 0.4;
-	//private int x=100;
-	//private int y=100;
+	//private HpSpace hpspace;
+	//private long score = 0;
+	//private boolean stop = false;
+	//private int time = 0;
+	private double difficulty = 0.2;
+	private long score = 1;
+	private int movePath = 0;
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
 		this.v = v;		
 		
 		gp.sprites.add(v);
 		
-		timer = new Timer(60, new ActionListener() {
+
+		timer = new Timer(45, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -45,17 +49,20 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 	
 	private void generateEnemy(){
-		Enemy e = new Enemy((int)(Math.random()*550), 15);
+		Enemy e = new Enemy((int)(Math.random()*1800), 50);
 		gp.sprites.add(e);
 		enemies.add(e);
 	}
 	
 	private void process(){
+		generatePath();
 		if(Math.random() < difficulty){
 			generateEnemy();
 		}
 		
 		Iterator<Enemy> e_iter = enemies.iterator();
+		Iterator<Path> p_iter = paths.iterator();
+
 		while(e_iter.hasNext()){
 			Enemy e = e_iter.next();
 			e.proceed();
@@ -63,10 +70,19 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 1000;
 			}
 		}
 		
+		while(p_iter.hasNext()){
+			Path p = p_iter.next();
+			p.proceed();
+			if(!p.isAlive()){
+				p_iter.remove();
+				gp.sprites.remove(p);
+			}
+		}
+
+
 		gp.updateGameUI(this);
 		
 		Rectangle2D.Double vr = v.getRectangle();
@@ -74,8 +90,16 @@ public class GameEngine implements KeyListener, GameReporter{
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
-				die();
-				return;
+				gp.sprites.remove(e);
+				score +=10;
+			}
+		}
+
+		Rectangle2D.Double pr;
+		for(Path p : paths){
+			pr = p.getRectangle();
+			if(pr.intersects(vr)){
+				score -=1;											
 			}
 		}
 	}
@@ -83,30 +107,58 @@ public class GameEngine implements KeyListener, GameReporter{
 	public void die(){
 		timer.stop();
 	}
+
+	private void generatePath(){
+		Path u = new Path(movePath(),2); 
+		gp.sprites.add(u);
+		paths.add(u);			
+		
+		Path d = new Path(movePath()+300,20); 
+		gp.sprites.add(d);
+		paths.add(d);			
+	}
 	
+	private int movePath(){
+		int n = (int)(Math.random()*2);
+		if(n == 0 && movePath < 800)
+			movePath += 2;
+		if(n == 1 && movePath > 0)
+			movePath -= 2;
+		if(movePath > 400)
+			movePath -= 2;
+		if(movePath < 0)
+			movePath += 2;
+		return movePath;
+	}
+
+
+
 	void controlVehicle(KeyEvent e) {
-		 
 		switch (e.getKeyCode()) {
-			/*case KeyEvent.VK_DOWN: y += 50; break;
-            case KeyEvent.VK_UP: y -= 50; break;
-            case KeyEvent.VK_LEFT: x -= 50; break;
-            case KeyEvent.VK_RIGHT: x += 50; break;
-         }*/
 		case KeyEvent.VK_LEFT:
-			v.move(-2);
+			v.LeftRight(-1);						
 			break;
 		case KeyEvent.VK_RIGHT:
-			v.move(2);
+			v.LeftRight(1);												
 			break;
-		/*case KeyEvent.VK_UP:
-			v.move(-4);
-			break;
-		case KeyEvent.VK_DOWN:
-			v.move(2);
-			break;*/
 		case KeyEvent.VK_D:
-			difficulty += 0.2;
+			difficulty += 0.1;
 			break;
+		 case KeyEvent.VK_UP:
+		 	v.UpDown(-1);
+		 	break;						
+		 case KeyEvent.VK_DOWN:
+		 	 v.UpDown(1);						
+		 	break;
+		case KeyEvent.VK_Z:
+		 	die();	
+		 	break;					
+		 case KeyEvent.VK_X:
+		 	start();	
+		 	break;						
+		 case KeyEvent.VK_R:
+		 	score = 0;					
+		 	break; 
 		}
 	}
 
@@ -118,54 +170,16 @@ public class GameEngine implements KeyListener, GameReporter{
 	public void keyPressed(KeyEvent e) {
 		controlVehicle(e);
 
-		 /*if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            System.out.println("Right key pressed");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            System.out.println("Left key pressed");
-        }
-        /*switch(e.getKeyCode()){
-        case (KeyEvent.VK_UP):{
-            if(direction!=Direction.SOUTH){
-                direction = Direction.NORTH;
-                wc.move(direction);
-            }
-            break;
-        }
-        case (KeyEvent.VK_DOWN):{
-            if(direction!=Direction.NORTH){
-                direction = Direction.SOUTH;
-                wc.move(direction);
-            }
-            break;
-        }
-        case (KeyEvent.VK_RIGHT):{
-            if(direction!=Direction.WEST){
-                direction = Direction.EAST;
-                wc.move(direction);
-            }
-            break;
-        }
-        case (KeyEvent.VK_LEFT):{
-            if(direction!=Direction.EAST){
-                direction = Direction.WEST;
-                wc.move(direction);
-            }
-            break;
-        }
-       }*/
-
-		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		/*if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             System.out.println("Right key Released");
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             System.out.println("Left key Released");
-        }
+        }*/
 	}
 
 	@Override

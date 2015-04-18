@@ -1,19 +1,30 @@
 package f2.spw;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Enemy extends Sprite{
-	public static final int Y_TO_FADE = 500; 
-	public static final int Y_TO_DIE = 650;
-	
-	private int step = 12;   // num 
+	public static final int Y_TO_FADE = 700;  //start fade
+	public static final int Y_TO_DIE = 850;   // die
+	 
+	private int step = 6;
 	private boolean alive = true;
 	
-	public Enemy(int x, int y) {  // shoot
-		super(x, y, 3, 23);
-		
+	BufferedImage pig;	
+
+	public Enemy(int x, int y){
+		super(x, y, 25, 30); 																		//5,10
+		try{
+			pig = ImageIO.read(new File("f2/pict/pig.png"));
+		}
+		catch(IOException d){
+
+		}
 	}
 
 	@Override
@@ -24,18 +35,24 @@ public class Enemy extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-		g.setColor(Color.YELLOW);
-		g.fillRect(x, y, width, height);
-		
+
+		g.drawImage(pig,x,y,width,height,null);
 	}
+		
 
 	public void proceed(){
+		int a = (int)(Math.random()*4);
 		y += step;
-		/*x += step * Math.cos(-1*direction);
-        y += step * Math.sin(-1*direction);*/
-		if(y > Y_TO_DIE){
+
+		if(a > 1)
+			x += step;
+		else if (a <= 1)
+			x -= step;
+		
+		if(y > Y_TO_DIE)
 			alive = false;
-		}
+		else if(x > Y_TO_FADE)
+			alive = false;
 	}
 	
 	public boolean isAlive(){

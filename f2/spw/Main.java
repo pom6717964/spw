@@ -8,10 +8,10 @@ public class Main {
 	public static void main(String[] args){
 		JFrame frame = new JFrame("Space War");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(450, 650);
+		frame.setSize(1100, 900);
 		frame.getContentPane().setLayout(new BorderLayout());
 		
-		SpaceShip v = new SpaceShip(225, 550, 30, 45);
+		SpaceShip v = new SpaceShip(550, 700, 30, 45);
 		GamePanel gp = new GamePanel();
 		GameEngine engine = new GameEngine(gp, v);
 		frame.addKeyListener(engine);
