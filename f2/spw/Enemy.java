@@ -11,10 +11,11 @@ import java.awt.Graphics2D;
 public class Enemy extends Sprite{
 	public static final int Y_TO_FADE = 700;  //start fade
 	public static final int Y_TO_DIE = 850;   // die
-	 
-	private int step = 6;
+	protected int step = 6;
 	private boolean alive = true;
-	
+	protected long hp = 10;
+
+
 	BufferedImage pig;	
 
 	public Enemy(int x, int y){
@@ -25,6 +26,18 @@ public class Enemy extends Sprite{
 		catch(IOException d){
 
 		}
+	}
+
+	public boolean isAlive(){
+		return alive;
+	}
+
+	public void reduceHP(int damage){
+		this.hp=this.hp-damage;
+	}
+
+	public long getHP(){
+		return this.hp;
 	}
 
 	@Override
@@ -41,21 +54,20 @@ public class Enemy extends Sprite{
 		
 
 	public void proceed(){
-		int a = (int)(Math.random()*4);
+		//int a = (int)(Math.random()*4);
 		y += step;
 
-		if(a > 1)
-			x += step;
+		if(y > Y_TO_DIE){
+			alive = false;
+		}
+		/*if(a > 1)
+			x += step;ssssssssss
 		else if (a <= 1)
 			x -= step;
 		
 		if(y > Y_TO_DIE)
 			alive = false;
 		else if(x > Y_TO_FADE)
-			alive = false;
-	}
-	
-	public boolean isAlive(){
-		return alive;
+			alive = false;*/
 	}
 }

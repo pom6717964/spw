@@ -7,9 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.swing.Timer;
-
 
 public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
@@ -17,21 +15,20 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 
 	private SpaceShip v;	
-	
+	private HP hp;
 	private Timer timer;
-	//private HpSpace hpspace;
-	//private long score = 0;
-	//private boolean stop = false;
-	//private int time = 0;
 	private double difficulty = 0.2;
-	private long score = 1;
+	private long score = 0;
 	private int movePath = 0;
+	private boolean stop = false;
+	private int t = 0;
+
 	public GameEngine(GamePanel gp, SpaceShip v) {
+		this.hp = new HP(10,30,v.getHp());
 		this.gp = gp;
 		this.v = v;		
-		
 		gp.sprites.add(v);
-		
+		gp.sprites.add(this.hp);
 
 		timer = new Timer(45, new ActionListener() {
 			
@@ -70,6 +67,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
+				score += 100;
 			}
 		}
 		
@@ -90,18 +88,25 @@ public class GameEngine implements KeyListener, GameReporter{
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
+				v.reduceHP(1);
+                hp.procreed();
+				
 				gp.sprites.remove(e);
-				score +=10;
+				if(v.getHp()<= 0){
+					v.die();
+                    die();
+                }
+				return;
 			}
 		}
 
 		Rectangle2D.Double pr;
-		for(Path p : paths){
+		/*for(Path p : paths){
 			pr = p.getRectangle();
 			if(pr.intersects(vr)){
-				score -=1;											
+				score -=10;											
 			}
-		}
+		}*/
 	}
 	
 	public void die(){
@@ -162,10 +167,23 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 	}
 
+	public void toggle(){
+        this.t++;
+        System.out.println(this.t);
+        if(this.t % 2 ==1)
+          this.stop = true;
+        else 
+          this.stop = false;   
+    }
+
 	public long getScore(){
 		return score;
 	}
-	
+
+	public int showHP(){
+		return v.getHp();
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		controlVehicle(e);
@@ -174,12 +192,7 @@ public class GameEngine implements KeyListener, GameReporter{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		/*if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            System.out.println("Right key Released");
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            System.out.println("Left key Released");
-        }*/
+		
 	}
 
 	@Override

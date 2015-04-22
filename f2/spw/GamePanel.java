@@ -8,6 +8,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -19,8 +25,7 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		bi = new BufferedImage(1100, 900, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
-		big.setBackground(new Color(127,255,212));
-
+		big.setBackground(new Color(216,191,216));
 	}
 
 	public void updateGameUI(GameReporter reporter){
@@ -38,6 +43,11 @@ public class GamePanel extends JPanel {
 		big.setFont(new Font("default",Font.PLAIN,25));*/
 		//big.setColor(Color.MAGENTA);
 		
+		big.setColor(new Color(0,0,205));
+		
+		big.setFont(new Font("default",Font.BOLD,30));
+		
+		big.drawString(String.format("HP %03d", reporter.showHP()),45,50);
 		for(Sprite s : sprites){
 			s.draw(big);
 		}

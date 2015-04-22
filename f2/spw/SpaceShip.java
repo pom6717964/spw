@@ -14,8 +14,10 @@ import javax.swing.Timer;
 public class SpaceShip extends Sprite{
 
 	private int step = 20;
-	//private int hp = 100;
-	//private boolean die = false;
+	private int hp = 1000;
+	private int exp = 0;
+	private boolean die = false;
+	
 	BufferedImage rocket1;
 
 	public SpaceShip(int x, int y, int width, int height) {
@@ -31,14 +33,23 @@ public class SpaceShip extends Sprite{
 	@Override
 	public void draw(Graphics2D g) {
 		g.drawImage(rocket1,x,y,width,height,null);
-		/*g.setColor(Color.GREEN);
-		g.fillOval(x, y, width, height);*/
-		
 	}
 	
-	/*public int getHp(){
+	public int getHp(){
 		return this.hp;
-	}*/
+	}
+
+	public void reduceHP(int damage){
+		this.hp-= damage;
+	}
+
+	public void incleaseExp(){
+		this.exp += 100;
+	}
+
+	public int getExp(){
+		return this.exp;
+	}
 
 	public void LeftRight(int direction){
         x += (step * direction);
@@ -56,13 +67,10 @@ public class SpaceShip extends Sprite{
 			y = 900 - height;
 	}
 
-	/*public void die(){
+    public void die(){
         this.die = true;
     }
-
     public boolean getDie(){
         return this.die;
-    }*/
-
-
+    }
 }
