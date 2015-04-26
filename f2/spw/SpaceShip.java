@@ -50,6 +50,13 @@ public class SpaceShip extends Sprite{
 	public int getExp(){
 		return this.exp;
 	}
+	public int moveX(){
+		return x;
+	}
+
+	public int moveY(){
+		return y;
+	}
 
 	public void LeftRight(int direction){
         x += (step * direction);

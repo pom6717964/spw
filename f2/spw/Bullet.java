@@ -8,7 +8,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class Enemy extends Sprite{
+public class Bullet extends Sprite{
 	public static final int Y_TO_FADE = 700;  //start fade
 	public static final int Y_TO_DIE = 850;   // die
 	protected int step = 6;
@@ -18,14 +18,9 @@ public class Enemy extends Sprite{
 
 	BufferedImage pig;	
 
-	public Enemy(int x, int y){
-		super(x, y, 25, 30); 																		//5,10
-		try{
-			pig = ImageIO.read(new File("f2/pict/pig.png"));
-		}
-		catch(IOException d){
-
-		}
+	public Bullet(int x, int y){
+		super(x+19, y, 10, 30); 																		//5,10
+		
 	}
 
 	public boolean isAlive(){
@@ -48,26 +43,24 @@ public class Enemy extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-
-		g.drawImage(pig,x,y,width,height,null);
+		g.setColor(Color.RED);
+		g.fillRect(x, y, width, height);
+		//g.drawImage(pig,x,y,width,height,null);
 	}
 		
 
 	public void proceed(){
-		//int a = (int)(Math.random()*4);
-		y += step;
 
+		
+		y -= step;
+		
 		if(y > Y_TO_DIE){
 			alive = false;
 		}
-		/*if(a > 1)
-			x += step;ssssssssss
-		else if (a <= 1)
-			x -= step;
-		
-		if(y > Y_TO_DIE)
+
+		else if(x > Y_TO_FADE){
 			alive = false;
-		else if(x > Y_TO_FADE)
-			alive = false;*/
+		}
+	
 	}
 }
