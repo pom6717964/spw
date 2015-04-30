@@ -1,5 +1,10 @@
 package f2.spw;
 
+import java.io.*;
+import javax.sound.sampled.*;
+
+import java.io.File;
+import javax.sound.sampled.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -52,11 +57,11 @@ public class GameEngine implements KeyListener, GameReporter{
 	}
 
 	private void generateBullet(){
-																						
-				Bullet b = new Bullet(v.moveX(),v.moveY()); 			
-				gp.sprites.add(b);
-				bullets.add(b);
-		  
+
+		Bullet b = new Bullet(v.moveX(),v.moveY()); 			
+		gp.sprites.add(b);
+		bullets.add(b);
+
 	}
 	
 	private void process(){
@@ -86,7 +91,6 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 100;
 			}
 		}
 		
@@ -109,38 +113,26 @@ public class GameEngine implements KeyListener, GameReporter{
 			er = e.getRectangle();
 			if(er.intersects(vr)){
 				v.reduceHP(1);
-                hp.procreed();
+				hp.procreed();
 				
 				gp.sprites.remove(e);
 				if(v.getHp()<= 0){
 					v.die();
-                    die();
-                }
+					die();
+
+				}
 				
 			}
 			for(Bullet b : bullets){
 				br = b.getRectangle();
 				if(br.intersects(er)){
 					gp.sprites.remove(e);
-      
+					score += 10;
 				}
 			}	
 		}
 
 
-		
-
-
-		//Rectangle2D.Double pr;
-		/*for(Path p : paths){
-			pr = p.getRectangle();
-			if(pr.intersects(vr)){
-				score -=10;											
-			}
-		}*/
-
-		
-		
 	}
 	
 	public void die(){
@@ -170,70 +162,88 @@ public class GameEngine implements KeyListener, GameReporter{
 		return movePath;
 	}
 
+	// public void effectSound(){
+	// 	try {
+	// 		File yourFile = new File("f2/sound/gunshot.wav");
+	// 		AudioInputStream stream;
+	// 		AudioFormat format;
+	// 		DataLine.Info info;
+	// 		Clip clip;
 
+	// 		stream = AudioSystem.getAudioInputStream(yourFile);
+	// 		format = stream.getFormat();
+	// 		info = new DataLine.Info(Clip.class, format);
+	// 		clip = (Clip) AudioSystem.getLine(info);
+	// 		clip.open(stream);
+	// 		clip.start();
+	// 	}
+	// 	catch (Exception e) {
+ //    //whatevers
+	// 	}
+	// }
 
-	void controlVehicle(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			v.LeftRight(-1);						
-			break;
-		case KeyEvent.VK_RIGHT:
-			v.LeftRight(1);												
-			break;
-		case KeyEvent.VK_D:
-			difficulty += 0.1;
-			break;
-		 case KeyEvent.VK_UP:
-		 	v.UpDown(-1);
-		 	break;						
-		 case KeyEvent.VK_DOWN:
-		 	 v.UpDown(1);						
-		 	break;
-		case KeyEvent.VK_Z:
-		 	die();	
-		 	break;					
-		 case KeyEvent.VK_X:
-		 	start();	
-		 	break;						
-		 case KeyEvent.VK_R:
-		 	score = 0;					
-		 	break; 
-		 case KeyEvent.VK_Q:
-		 	generateBullet();	
-		 	break;
+		void controlVehicle(KeyEvent e) {
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT:
+				v.LeftRight(-1);						
+				break;
+				case KeyEvent.VK_RIGHT:
+				v.LeftRight(1);												
+				break;
+				case KeyEvent.VK_D:
+				difficulty += 0.1;
+				break;
+				case KeyEvent.VK_UP:
+				v.UpDown(-1);
+				break;						
+				case KeyEvent.VK_DOWN:
+				v.UpDown(1);						
+				break;
+				case KeyEvent.VK_Z:
+				die();	
+				break;					
+				case KeyEvent.VK_X:
+				start();	
+				break;						
+				case KeyEvent.VK_R:
+				score = 0;					
+				break; 
+				case KeyEvent.VK_Q:
+				generateBullet();	
+				break;
+			}
+		}
+
+		public void toggle(){
+			this.t++;
+			System.out.println(this.t);
+			if(this.t % 2 ==1)
+				this.stop = true;
+			else 
+				this.stop = false;   
+		}
+
+		public long getScore(){
+			return score;
+		}
+
+		public int showHP(){
+			return v.getHp();
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			controlVehicle(e);
+
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+		//do nothing		
 		}
 	}
-
-	public void toggle(){
-        this.t++;
-        System.out.println(this.t);
-        if(this.t % 2 ==1)
-          this.stop = true;
-        else 
-          this.stop = false;   
-    }
-
-	public long getScore(){
-		return score;
-	}
-
-	public int showHP(){
-		return v.getHp();
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		controlVehicle(e);
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		//do nothing		
-	}
-}

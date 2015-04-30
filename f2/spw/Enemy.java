@@ -60,14 +60,5 @@ public class Enemy extends Sprite{
 		if(y > Y_TO_DIE){
 			alive = false;
 		}
-		/*if(a > 1)
-			x += step;ssssssssss
-		else if (a <= 1)
-			x -= step;
-		
-		if(y > Y_TO_DIE)
-			alive = false;
-		else if(x > Y_TO_FADE)
-			alive = false;*/
 	}
 }

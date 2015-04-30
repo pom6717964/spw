@@ -12,7 +12,7 @@ public class Path extends Sprite{
 	private boolean alive = true;
 	
 	public Path(int x, int y) {
-		super(x, y, 180, 100); 																		//5,10
+		super(x, y, 350, 450); 																		//5,10
 		
 	}
 

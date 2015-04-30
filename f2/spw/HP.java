@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 public class HP extends Sprite{
     public int hp; 
     public HP(int x,int y, int hp){
-        super(x,y,hp,10000);
+        super(x,y,hp,2);
         this.hp = hp;
     }
     @Override

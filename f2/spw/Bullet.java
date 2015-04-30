@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Bullet extends Sprite{
-	public static final int Y_TO_FADE = 700;  //start fade
+	public static final int Y_TO_FADE = 1300;  //start fade
 	public static final int Y_TO_DIE = 850;   // die
 	protected int step = 6;
 	private boolean alive = true;
@@ -44,7 +44,7 @@ public class Bullet extends Sprite{
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
 		g.setColor(Color.RED);
-		g.fillRect(x, y, width, height);
+		g.fillRect(x, y, width-2, height-4);
 		//g.drawImage(pig,x,y,width,height,null);
 	}
 		

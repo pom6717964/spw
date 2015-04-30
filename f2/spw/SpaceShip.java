@@ -44,7 +44,7 @@ public class SpaceShip extends Sprite{
 	}
 
 	public void incleaseExp(){
-		this.exp += 100;
+		this.exp += 0;
 	}
 
 	public int getExp(){
