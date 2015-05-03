@@ -43,8 +43,8 @@ public class SpaceShip extends Sprite{
 		this.hp-= damage;
 	}
 
-	public void incleaseExp(){
-		this.exp += 0;
+	public void increaseHP(){
+		this.hp+=30;
 	}
 
 	public int getExp(){

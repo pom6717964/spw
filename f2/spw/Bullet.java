@@ -11,15 +11,14 @@ import java.awt.Graphics2D;
 public class Bullet extends Sprite{
 	public static final int Y_TO_FADE = 1300;  //start fade
 	public static final int Y_TO_DIE = 850;   // die
-	protected int step = 6;
+	protected int step = 11;
 	private boolean alive = true;
 	protected long hp = 10;
 
 
-	BufferedImage pig;	
 
 	public Bullet(int x, int y){
-		super(x+19, y, 10, 30); 																		//5,10
+		super(x+19, y, 7, 30); 																		//5,10
 		
 	}
 
@@ -43,14 +42,13 @@ public class Bullet extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-		g.setColor(Color.RED);
+		g.setColor(new Color(25,25,112));
 		g.fillRect(x, y, width-2, height-4);
-		//g.drawImage(pig,x,y,width,height,null);
+
 	}
 		
 
 	public void proceed(){
-
 		
 		y -= step;
 		

@@ -34,14 +34,6 @@ public class GamePanel extends JPanel {
 		big.setColor(Color.BLACK);
 		big.setFont(new Font("default",Font.BOLD,24));
 		big.drawString(String.format("%08d",reporter.getScore()), 510, 40);
-		/*if(reporter.getScore() < 100000)
-			big.setColor(Color.BLACK);
-		else if(reporter.getScore() > 100000 && reporter.getScore() < 500000)
-			big.setColor(Color.GREEN);
-		else
-			big.setColor(Color.RED);
-		big.setFont(new Font("default",Font.PLAIN,25));*/
-		//big.setColor(Color.MAGENTA);
 		
 		big.setColor(new Color(0,0,205));
 		

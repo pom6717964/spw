@@ -19,10 +19,14 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Path> paths = new ArrayList<Path>();
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+
+	private ArrayList<Star> stars = new ArrayList<Star>();
+
 	private SpaceShip v;	
 	private HP hp;
 	private Timer timer;
 	private double difficulty = 0.2;
+	private double difficulty1 = 0.1;
 	private long score = 0;
 	private int movePath = 0;
 	private boolean stop = false;
@@ -56,6 +60,13 @@ public class GameEngine implements KeyListener, GameReporter{
 		enemies.add(e);
 	}
 
+	private void generateStar(){
+		Star i = new Star((int)(Math.random()*1800), 50);
+		gp.sprites.add(i);
+		stars.add(i);
+	}
+
+
 	private void generateBullet(){
 
 		Bullet b = new Bullet(v.moveX(),v.moveY()); 			
@@ -63,12 +74,27 @@ public class GameEngine implements KeyListener, GameReporter{
 		bullets.add(b);
 
 	}
+
+	private void generatePath(){
+		Path u = new Path(movePath(),2); 
+		gp.sprites.add(u);
+		paths.add(u);			
+		
+		Path d = new Path(movePath()+300,20); 
+		gp.sprites.add(d);
+		paths.add(d);			
+	}
 	
 	private void process(){
 		generatePath();
 		if(Math.random() < difficulty){
 			generateEnemy();
 		}
+		if(Math.random() < difficulty1){
+			generateStar();
+		}
+
+		Iterator<Star> s_iter = stars.iterator();
 		Iterator<Bullet> b_iter = bullets.iterator();
 		Iterator<Enemy> e_iter = enemies.iterator();
 		Iterator<Path> p_iter = paths.iterator();
@@ -94,6 +120,16 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 		}
 		
+		while(s_iter.hasNext()){
+			Star s = s_iter.next();
+			s.proceed();
+			
+			if(!s.isAlive()){
+				s_iter.remove();
+				gp.sprites.remove(s);
+			}
+		}
+
 		while(p_iter.hasNext()){
 			Path p = p_iter.next();
 			p.proceed();
@@ -109,6 +145,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		Rectangle2D.Double br;
+
+		
 		for(Enemy e : enemies){
 			er = e.getRectangle();
 			if(er.intersects(vr)){
@@ -123,6 +161,8 @@ public class GameEngine implements KeyListener, GameReporter{
 				}
 				
 			}
+			
+
 			for(Bullet b : bullets){
 				br = b.getRectangle();
 				if(br.intersects(er)){
@@ -132,6 +172,10 @@ public class GameEngine implements KeyListener, GameReporter{
 			}	
 		}
 
+	
+			
+		
+
 
 	}
 	
@@ -139,15 +183,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		timer.stop();
 	}
 
-	private void generatePath(){
-		Path u = new Path(movePath(),2); 
-		gp.sprites.add(u);
-		paths.add(u);			
-		
-		Path d = new Path(movePath()+300,20); 
-		gp.sprites.add(d);
-		paths.add(d);			
-	}
+	
 	
 	private int movePath(){
 		int n = (int)(Math.random()*2);
@@ -162,27 +198,9 @@ public class GameEngine implements KeyListener, GameReporter{
 		return movePath;
 	}
 
-	// public void effectSound(){
-	// 	try {
-	// 		File yourFile = new File("f2/sound/gunshot.wav");
-	// 		AudioInputStream stream;
-	// 		AudioFormat format;
-	// 		DataLine.Info info;
-	// 		Clip clip;
 
-	// 		stream = AudioSystem.getAudioInputStream(yourFile);
-	// 		format = stream.getFormat();
-	// 		info = new DataLine.Info(Clip.class, format);
-	// 		clip = (Clip) AudioSystem.getLine(info);
-	// 		clip.open(stream);
-	// 		clip.start();
-	// 	}
-	// 	catch (Exception e) {
- //    //whatevers
-	// 	}
-	// }
 
-		void controlVehicle(KeyEvent e) {
+	public void controlVehicle(KeyEvent e) {
 			switch (e.getKeyCode()) {
 				case KeyEvent.VK_LEFT:
 				v.LeftRight(-1);						
@@ -214,14 +232,6 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 		}
 
-		public void toggle(){
-			this.t++;
-			System.out.println(this.t);
-			if(this.t % 2 ==1)
-				this.stop = true;
-			else 
-				this.stop = false;   
-		}
 
 		public long getScore(){
 			return score;

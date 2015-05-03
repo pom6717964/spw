@@ -1,18 +1,22 @@
 package f2.spw;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class Path extends Sprite{
-	public static final int Y_TO_FADE = 1100;
-	public static final int Y_TO_DIE = 900;
+public class Star extends Sprite{
+	public static final int Y_TO_FADE = 400;
+	public static final int Y_TO_DIE = 600;
 	
-	private int step = 100;
+	private int step = 12;
 	private boolean alive = true;
 	
-	public Path(int x, int y) {
-		super(x, y, 350, 450); 																		//5,10
+	public Star(int x, int y) {
+		super(x, y, 2, 70);
 		
 	}
 
@@ -24,11 +28,10 @@ public class Path extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-
-		g.drawImage(null, null, 0, 0);
+		g.setColor(Color.WHITE);
+		g.fillRect(x, y, width, height);
 		
 	}
-		
 
 	public void proceed(){
 		y += step;

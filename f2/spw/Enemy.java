@@ -16,12 +16,14 @@ public class Enemy extends Sprite{
 	protected long hp = 10;
 
 
-	BufferedImage pig;	
+		
+	BufferedImage alian1;	
 
 	public Enemy(int x, int y){
-		super(x, y, 25, 30); 																		//5,10
+		super(x, y, 35, 40); 											
 		try{
-			pig = ImageIO.read(new File("f2/pict/pig.png"));
+
+			alian1 = ImageIO.read(new File("f2/pict/alian1.png"));
 		}
 		catch(IOException d){
 
@@ -49,12 +51,12 @@ public class Enemy extends Sprite{
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
 
-		g.drawImage(pig,x,y,width,height,null);
+		g.drawImage(alian1,x,y,width,height,null);
 	}
 		
 
 	public void proceed(){
-		//int a = (int)(Math.random()*4);
+		//int a = (int)(Math.random()*0.5);
 		y += step;
 
 		if(y > Y_TO_DIE){

@@ -10,8 +10,6 @@ public class HP extends Sprite{
     @Override
     public void draw(Graphics2D g){
         g.setColor(new Color(139,0,139));
-        //g.fillOval(x,y,this.hp,50)
-        //g.fillOval(18,50,180,70);
     }
     public void procreed(){
         this.hp -= 1;
