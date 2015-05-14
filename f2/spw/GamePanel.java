@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
+	BufferedImage bg;
 	private BufferedImage bi;	
 	Graphics2D big;
 	ArrayList<Sprite> sprites = new ArrayList<Sprite>();
@@ -25,13 +26,22 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		bi = new BufferedImage(1100, 900, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
-		big.setBackground(new Color(216,191,216));
+		big.setBackground(Color.BLACK);
+		// big.setBackground(new Color(216,191,216));
+
+		try{
+			bg = ImageIO.read(new File("f2/pict/galaxy.png"));
+		}
+		catch(IOException e){
+			
+		}
 	}
 
 	public void updateGameUI(GameReporter reporter){
+		big.drawImage(bg, 0, 0, 1100, 900, null);
 		big.clearRect(0, 0, 1100, 900);
 		//big.setFont(new Font("default",Font.PLAIN,13));
-		big.setColor(Color.BLACK);
+		big.setColor(Color.WHITE);
 		big.setFont(new Font("default",Font.BOLD,24));
 		big.drawString(String.format("%08d",reporter.getScore()), 510, 40);
 		
